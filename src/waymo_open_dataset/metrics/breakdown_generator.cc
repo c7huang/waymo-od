@@ -114,10 +114,11 @@ class BreakdownGeneratorRange : public BreakdownGenerator {
                           object.object().box().center_z());
     constexpr float kNearRange = 30.0;
     constexpr float kMidRange = 50.0;
+    constexpr float kFarRange = 100.0;
     if (object.object().type() == Label::TYPE_UNKNOWN) {
       return -1;
     }
-    const int shard_offset = 3 * (object.object().type() - 1);
+    const int shard_offset = 4 * (object.object().type() - 1);
     if (shard_offset < 0) {
       return -1;
     }
@@ -125,32 +126,36 @@ class BreakdownGeneratorRange : public BreakdownGenerator {
       return 0 + shard_offset;
     } else if (range < kMidRange) {
       return 1 + shard_offset;
-    } else {
+    } else if (range < kFarRange) {
       return 2 + shard_offset;
+    } else {
+      return 3 + shard_offset;
     }
   }
 
   Breakdown::GeneratorId Id() const override { return Breakdown::RANGE; }
 
   int NumShards() const override {
-    return 3 * static_cast<int>(Label::Type_MAX);
+    return 4 * static_cast<int>(Label::Type_MAX);
   }
 
   std::string ShardName(int shard) const override {
-    const Label::Type object_type = static_cast<Label::Type>(shard / 3 + 1);
+    const Label::Type object_type = static_cast<Label::Type>(shard / 4 + 1);
     CHECK_LE(object_type, Label::Type_MAX) << shard;
     CHECK_GE(object_type, 1) << shard;
 
     const std::string prefix = absl::StrCat(Breakdown::GeneratorId_Name(Id()),
                                             "_", Label::Type_Name(object_type));
-    const int range_shard = shard % 3;
+    const int range_shard = shard % 4;
     switch (range_shard) {
       case 0:
         return absl::StrCat(prefix, "_", "[0, 30)");
       case 1:
         return absl::StrCat(prefix, "_", "[30, 50)");
       case 2:
-        return absl::StrCat(prefix, "_", "[50, +inf)");
+        return absl::StrCat(prefix, "_", "[50, 100)");
+      case 3:
+        return absl::StrCat(prefix, "_", "[100, +inf)");
       default:
         LOG(FATAL) << "Code should not reach here.";
     }

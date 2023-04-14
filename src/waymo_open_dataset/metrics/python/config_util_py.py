@@ -23,11 +23,13 @@ __all__ = [
 ]
 
 _OBJECT_TYPES = (label_pb2.Label.TYPE_VEHICLE, label_pb2.Label.TYPE_PEDESTRIAN,
-                 label_pb2.Label.TYPE_SIGN, label_pb2.Label.TYPE_CYCLIST)
+                 label_pb2.Label.TYPE_SIGN, label_pb2.Label.TYPE_CYCLIST,
+                 label_pb2.Label.TYPE_TRUCK, label_pb2.Label.TYPE_BUS,
+                 label_pb2.Label.TYPE_MOTORCYCLE)
 
 _ALL_BUT_SIGN_SHARD_NAMES = ("ALL_BUT_SIGN", "SIGN")
 _VELOCITY_SHARD_NAMES = ("STATIONARY", "SLOW", "MEDIUM", "FAST", "VERY_FAST")
-_RANGE_SHARD_NAMES = ("[0, 30)", "[30, 50)", "[50, +inf)")
+_RANGE_SHARD_NAMES = ("[0, 30)", "[30, 50)", "[50, 100)", "[100, +inf)")
 _SIZE_SHARD_NAMES = ("small", "large")
 _CAMERA_SHARD_NAMES = ("FRONT", "FRONT-LEFT", "FRONT-RIGHT", "SIDE-LEFT",
                        "SIDE-RIGHT")

@@ -66,6 +66,9 @@ message Label {
     TYPE_PEDESTRIAN = 2;
     TYPE_SIGN = 3;
     TYPE_CYCLIST = 4;
+    TYPE_TRUCK = 5;
+    TYPE_BUS = 6;
+    TYPE_MOTORCYCLE = 7;
   }
   optional Type type = 3;
   // Object ID.
